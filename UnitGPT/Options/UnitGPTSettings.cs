@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
+using UnitGPT.Services.CodeGeneration;
 
 namespace UnitGPT
 {
@@ -14,17 +17,16 @@ namespace UnitGPT
     public class UnitGPTSettings : BaseOptionModel<UnitGPTSettings>
     {
         [Category("UnitGPT")]
-        [DisplayName("xUnit project path")]
-        [Description("The path to the xUnit project.")]
+        [DisplayName("xUnit project name")]
+        [Description("The name to the xUnit project.")]
         [DefaultValue(true)]
-        public string XUnitTestProjectPath { get; set; }
+        public string XUnitTestProjectName { get; set; }
 
         [Category("UnitGPT")]
-        [DisplayName("openai api key")]
+        [DisplayName("Openai api-key")]
         [Description("The openAi api key, requeried to make api calls to generate tests.")]
         [DefaultValue(true)]
         public string APIKey { get; set; }
-
 
     }
 }

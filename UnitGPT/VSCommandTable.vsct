@@ -21,7 +21,7 @@
 	      <Icon guid="ImageCatalogGuid" id="Test" />
         <CommandFlag>IconIsMoniker</CommandFlag>
         <Strings>
-          <ButtonText>Create XUnit test from snippet</ButtonText>
+          <ButtonText>Create xUnit test from snippet</ButtonText>
           <LocCanonicalName>.UnitGPT.MyCommand</LocCanonicalName>
         </Strings>
       </Button>
