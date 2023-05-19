@@ -65,6 +65,7 @@
     <Compile Include="Services\OpenAI\PromptBuilders\PromptBuilderService.cs" />
     <Compile Include="Services\Status\IStatusStrategy.cs" />
     <Compile Include="Services\Status\Strategies\StatusBarStrategy.cs" />
+    <Compile Include="Services\Status\Strategies\TaskStatusCenterStrategy.cs" />
     <Compile Include="Services\Status\Strategies\ThreadedWaitDialogStrategy.cs" />
     <Compile Include="Services\Status\StatusStrategyContext.cs" />
     <Compile Include="UnitGPTPackage.cs" />

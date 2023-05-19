@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnitGPT.Services.CodeGeneration;
 using UnitGPT.Services.OpenAI;
 using UnitGPT.Services.Status;
@@ -35,11 +36,14 @@ namespace UnitGPT.Commands
 
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
-            var steps = 4;
+            const int steps = 4;
+
             var sbs = new StatusBarStrategy(steps);
             var twd = new ThreadedWaitDialogStrategy(steps);
+            var tsc = new TaskStatusCenterStrategy(steps);
             await sbs.SetUpAsync();
             await twd.SetUpAsync();
+            await tsc.SetUpAsync();
 
             CheckSettings();
             await SetSelectedText();
@@ -53,27 +57,30 @@ namespace UnitGPT.Commands
             {
                 await SetAndUpdateVisualStatusContextAsync(sbs, _startingProcessMsg);
                 await SetAndUpdateVisualStatusContextAsync(twd, _startingProcessMsg);
+                await SetAndUpdateVisualStatusContextAsync(tsc, _startingProcessMsg);
 
                 await SetAndUpdateVisualStatusContextAsync(sbs, _generatingUnitTestMsg);
                 await SetAndUpdateVisualStatusContextAsync(twd, _generatingUnitTestMsg);
+                await SetAndUpdateVisualStatusContextAsync(tsc, _generatingUnitTestMsg);
                 var unitTest = await _requestService.MakeRequest(_selectedCode);
 
                 await SetAndUpdateVisualStatusContextAsync(sbs, _generatingTestFileMsg);
                 await SetAndUpdateVisualStatusContextAsync(twd, _generatingTestFileMsg);
+                await SetAndUpdateVisualStatusContextAsync(tsc, _generatingTestFileMsg);
                 await _codeGenerationService.GenerateTestFileAsync(unitTest.ClassName, unitTest.TestCode);
-                
+
                 await SetAndUpdateVisualStatusContextAsync(sbs, _processDoneMsg);
                 await SetAndUpdateVisualStatusContextAsync(twd, _processDoneMsg);
+                await SetAndUpdateVisualStatusContextAsync(tsc, _processDoneMsg);
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await ShowError(ex.Message);
                 await sbs.TearDown();
                 await twd.TearDown();
-
+                await tsc.TearDown();
             }
-            
         }
 
         private async Task SetSelectedText()
