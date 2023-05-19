@@ -63,7 +63,10 @@
     <Compile Include="Services\OpenAI\RequestService.cs" />
     <Compile Include="Services\OpenAI\Services\ParseResponseService.cs" />
     <Compile Include="Services\OpenAI\PromptBuilders\PromptBuilderService.cs" />
-    <Compile Include="Services\Status\VisualStatusService.cs" />
+    <Compile Include="Services\Status\IStatusStrategy.cs" />
+    <Compile Include="Services\Status\Strategies\StatusBarStrategy.cs" />
+    <Compile Include="Services\Status\Strategies\ThreadedWaitDialogStrategy.cs" />
+    <Compile Include="Services\Status\StatusStrategyContext.cs" />
     <Compile Include="UnitGPTPackage.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>

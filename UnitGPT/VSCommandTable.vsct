@@ -16,7 +16,7 @@
     <!--This section defines the elements the user can interact with, like a menu command or a button
         or combo box in a toolbar. -->
     <Buttons>
-      <Button guid="UnitGPT" id="MyCommand" priority="0x0100" type="Button">
+	    <Button guid="UnitGPT" id="MyCommand" priority="0x0100" type="Button">
         <Parent guid="UnitGPT" id="MyMenuGroup" />
 	      <Icon guid="ImageCatalogGuid" id="Test" />
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -27,7 +27,10 @@
       </Button>
     </Buttons>
   </Commands>
-
+  <KeyBindings>
+	  <KeyBinding guid="UnitGPT" id="MyCommand"
+	              key1="U" mod1="Alt" editor="guidVSStd97" />
+  </KeyBindings>
   <Symbols>
     <GuidSymbol name="UnitGPT" value="{0e628c5d-9de4-412a-b449-b73d62ca694f}">
       <IDSymbol name="MyMenuGroup" value="0x0001" />

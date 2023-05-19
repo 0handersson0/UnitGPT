@@ -1,30 +1,34 @@
 ﻿using Microsoft.VisualStudio.Shell.Interop;
 
-namespace UnitGPT.Services.Status
+namespace UnitGPT.Services.Status.Strategies
 {
-    internal class VisualStatusService
+    internal class ThreadedWaitDialogStrategy : IStatusStrategy
     {
         private IVsThreadedWaitDialog4 _twd;
         private int _totalSteps;
         private int _currentStep = 0;
 
-        internal async Task SetUp(int totalSteps)
+        public ThreadedWaitDialogStrategy(int totalSteps)
         {
-            var fac = await VS.Services.GetThreadedWaitDialogAsync() as IVsThreadedWaitDialogFactory;
-            _twd = fac.CreateInstance();
             _totalSteps = totalSteps;
         }
 
-        internal async Task TearDown(string message = "")
+        public async Task SetUpAsync()
+        {
+#pragma warning disable CVST001 // Cast interop services to their specific type
+            var fac = await VS.Services.GetThreadedWaitDialogAsync() as IVsThreadedWaitDialogFactory;
+#pragma warning restore CVST001 // Cast interop services to their specific type
+            _twd = fac.CreateInstance();
+        }
+
+        public async Task TearDown(string message = "")
         {
             _currentStep = 0;
             _twd.UpdateProgress("In progress", message, message, _totalSteps, _totalSteps, true, out _);
-            await VS.StatusBar.ShowProgressAsync(message, _totalSteps, _totalSteps);
             (_twd as IDisposable).Dispose();
-            
         }
 
-        internal async Task UpdateStep(string message)
+        public async Task UpdateStep(string message)
         {
             if (_currentStep == 0)
             {
@@ -38,11 +42,8 @@ namespace UnitGPT.Services.Status
                 await TearDown(message);
                 return;
             }
-           
-            await VS.StatusBar.ShowProgressAsync(message, _currentStep, _totalSteps);
+
             _twd.UpdateProgress("In progress", message, message, _currentStep, _totalSteps, true, out _);
-            
-            
         }
     }
 }

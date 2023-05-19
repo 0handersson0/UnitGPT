@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualStudio.Shell.Interop;
-using System.Linq;
+﻿using System.Linq;
 using UnitGPT.Services.CodeGeneration;
 using UnitGPT.Services.OpenAI;
 using UnitGPT.Services.Status;
-using static System.Net.Mime.MediaTypeNames;
+using UnitGPT.Services.Status.Strategies;
 
 namespace UnitGPT.Commands
 {
@@ -15,17 +14,32 @@ namespace UnitGPT.Commands
         private string _selectedCode = string.Empty;
         private CodeGenerationService _codeGenerationService;
         private RequestService _requestService;
-        private VisualStatusService _visualStatusService;
+        private StatusStrategyContext _statusStrategyContext;
+        private string _generatingUnitTestMsg = "generating unit test...";
+        private string _startingProcessMsg = "Starting process";
+        private string _generatingTestFileMsg = "generating test file...";
+        private string _processDoneMsg = "process done...";
+
         public MyCommand()
         {
             _codeGenerationService = new CodeGenerationService();
             _requestService = new RequestService();
-            _visualStatusService = new VisualStatusService();
+            _statusStrategyContext = new StatusStrategyContext();
+        }
+
+        private async Task SetAndUpdateVisualStatusContextAsync(IStatusStrategy strategy, string msg)
+        {
+            await _statusStrategyContext.SetStrategy(strategy);
+            await _statusStrategyContext.UpdateStep(msg);
         }
 
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
-            await _visualStatusService.SetUp(4);
+            var steps = 4;
+            var sbs = new StatusBarStrategy(steps);
+            var twd = new ThreadedWaitDialogStrategy(steps);
+            await sbs.SetUpAsync();
+            await twd.SetUpAsync();
 
             CheckSettings();
             await SetSelectedText();
@@ -37,17 +51,27 @@ namespace UnitGPT.Commands
 
             try
             {
-                await _visualStatusService.UpdateStep("Starting process");
-                await _visualStatusService.UpdateStep("generating code...");
+                await SetAndUpdateVisualStatusContextAsync(sbs, _startingProcessMsg);
+                await SetAndUpdateVisualStatusContextAsync(twd, _startingProcessMsg);
+
+                await SetAndUpdateVisualStatusContextAsync(sbs, _generatingUnitTestMsg);
+                await SetAndUpdateVisualStatusContextAsync(twd, _generatingUnitTestMsg);
                 var unitTest = await _requestService.MakeRequest(_selectedCode);
-                await _visualStatusService.UpdateStep("creating test class...");
+
+                await SetAndUpdateVisualStatusContextAsync(sbs, _generatingTestFileMsg);
+                await SetAndUpdateVisualStatusContextAsync(twd, _generatingTestFileMsg);
                 await _codeGenerationService.GenerateTestFileAsync(unitTest.ClassName, unitTest.TestCode);
-                await _visualStatusService.UpdateStep("process done...");
+                
+                await SetAndUpdateVisualStatusContextAsync(sbs, _processDoneMsg);
+                await SetAndUpdateVisualStatusContextAsync(twd, _processDoneMsg);
+
             }
             catch(Exception ex)
             {
                 await ShowError(ex.Message);
-                await _visualStatusService.TearDown();
+                await sbs.TearDown();
+                await twd.TearDown();
+
             }
             
         }
