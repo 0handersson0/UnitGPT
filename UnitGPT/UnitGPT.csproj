@@ -45,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\Base\CustomBaseCommand.cs" />
     <Compile Include="Helpers\TextHelpers.cs" />
     <Compile Include="Options\UnitGPTSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,9 +6,10 @@ namespace UnitGPT.Services.Status.Strategies
     {
         private ITaskHandler _taskHandler;
         private TaskProgressData _progressData;
-        private int _totalSteps;
+        private readonly int _totalSteps;
         private int _currentStep;
-
+        private bool _runTask = true;
+        private string _progressText;
         public TaskStatusCenterStrategy(int totalSteps)
         {
             _totalSteps = totalSteps;
@@ -26,26 +27,31 @@ namespace UnitGPT.Services.Status.Strategies
             _progressData.CanBeCanceled = false;
 
             _taskHandler = tsc.PreRegister(options, _progressData);
-            var task = LongRunningTaskAsync();
+            var task = LongRunningTaskAsync(_progressData, _taskHandler);
             _taskHandler.RegisterTask(task);
         }
 
         public async Task TearDown(string message = "")
-        { }
+        {
+            _currentStep = _totalSteps;
+        }
 
         public async Task UpdateStep(string message)
         {
             _currentStep++;
-            _progressData.PercentComplete = _currentStep / _totalSteps * 100;
-            _progressData.ProgressText = message;
-            _taskHandler.Progress.Report(_progressData);
+            _progressText = message;
         }
 
-        private async Task LongRunningTaskAsync()
+        private async Task LongRunningTaskAsync(TaskProgressData data, ITaskHandler handler)
         {
-            _progressData.PercentComplete = _currentStep / _totalSteps * 100;
-            _progressData.ProgressText = "";
-            _taskHandler.Progress.Report(_progressData);
+            for (; _currentStep <= _totalSteps;)
+            {
+                await Task.Delay(100);
+                if (_currentStep == _totalSteps) break;
+                data.PercentComplete = (int)(_currentStep / _totalSteps * 100);
+                data.ProgressText = $"{_progressText}. Step {_currentStep} of {_totalSteps} completed";
+                handler.Progress.Report(data);
+            }
         }
     }
 

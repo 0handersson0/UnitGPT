@@ -10,40 +10,55 @@ namespace UnitGPT.Commands
     [Command(PackageIds.MyCommand)]
     internal sealed class MyCommand : BaseCommand<MyCommand>
     {
+        private const int _executionSteps = 4;
 
         private string _errorMsg = string.Empty;
         private string _selectedCode = string.Empty;
         private CodeGenerationService _codeGenerationService;
         private RequestService _requestService;
         private StatusStrategyContext _statusStrategyContext;
+        private readonly List<IStatusStrategy> _statusStrategies;
+
         private string _generatingUnitTestMsg = "generating unit test...";
-        private string _startingProcessMsg = "Starting process";
+        private string _startingProcessMsg = "starting process";
         private string _generatingTestFileMsg = "generating test file...";
         private string _processDoneMsg = "process done...";
+        private const string _noxUnitProjectPathErrorMessage = "No xUnit project path, please add a path to created xUnit project under Tools/Options/UnitGPT.";
+        private const string _noApiKeyErrorMessage = "No api key to OpenAi. Please add a key under Tools/Options/UnitGPT.";
+        private const string _noSelectedCodeErrorMessage = "No selected code.";
 
         public MyCommand()
         {
-            _codeGenerationService = new CodeGenerationService();
-            _requestService = new RequestService();
-            _statusStrategyContext = new StatusStrategyContext();
+            _codeGenerationService = new ();
+            _requestService = new ();
+            _statusStrategyContext = new ();
+            _statusStrategies = new();
         }
 
-        private async Task SetAndUpdateVisualStatusContextAsync(IStatusStrategy strategy, string msg)
+        private async Task SetAndUpdateVisualStatusContextAsync(string msg)
         {
-            await _statusStrategyContext.SetStrategy(strategy);
-            await _statusStrategyContext.UpdateStep(msg);
+
+            foreach (var statusStrategy in _statusStrategies)
+            {
+                await _statusStrategyContext.SetStrategy(statusStrategy);
+                await _statusStrategyContext.UpdateStep(msg);
+            }
+        }
+
+        private async Task SetUpStatusStrategiesAsync(params IStatusStrategy[] statusStrategies)
+        {
+            _statusStrategies.AddRange(statusStrategies);
+
+            foreach (var statusStrategy in _statusStrategies)
+            {
+                await statusStrategy.SetUpAsync();
+            }
         }
 
         protected override async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
-            const int steps = 4;
 
-            var sbs = new StatusBarStrategy(steps);
-            var twd = new ThreadedWaitDialogStrategy(steps);
-            var tsc = new TaskStatusCenterStrategy(steps);
-            await sbs.SetUpAsync();
-            await twd.SetUpAsync();
-            await tsc.SetUpAsync();
+            await SetUpStatusStrategiesAsync(new StatusBarStrategy(_executionSteps), new TaskStatusCenterStrategy(_executionSteps));
 
             CheckSettings();
             await SetSelectedText();
@@ -55,31 +70,26 @@ namespace UnitGPT.Commands
 
             try
             {
-                await SetAndUpdateVisualStatusContextAsync(sbs, _startingProcessMsg);
-                await SetAndUpdateVisualStatusContextAsync(twd, _startingProcessMsg);
-                await SetAndUpdateVisualStatusContextAsync(tsc, _startingProcessMsg);
+                await SetAndUpdateVisualStatusContextAsync(_startingProcessMsg);
+                await SetAndUpdateVisualStatusContextAsync(_generatingUnitTestMsg);
 
-                await SetAndUpdateVisualStatusContextAsync(sbs, _generatingUnitTestMsg);
-                await SetAndUpdateVisualStatusContextAsync(twd, _generatingUnitTestMsg);
-                await SetAndUpdateVisualStatusContextAsync(tsc, _generatingUnitTestMsg);
                 var unitTest = await _requestService.MakeRequest(_selectedCode);
+                
+                await SetAndUpdateVisualStatusContextAsync(_generatingTestFileMsg);
 
-                await SetAndUpdateVisualStatusContextAsync(sbs, _generatingTestFileMsg);
-                await SetAndUpdateVisualStatusContextAsync(twd, _generatingTestFileMsg);
-                await SetAndUpdateVisualStatusContextAsync(tsc, _generatingTestFileMsg);
                 await _codeGenerationService.GenerateTestFileAsync(unitTest.ClassName, unitTest.TestCode);
 
-                await SetAndUpdateVisualStatusContextAsync(sbs, _processDoneMsg);
-                await SetAndUpdateVisualStatusContextAsync(twd, _processDoneMsg);
-                await SetAndUpdateVisualStatusContextAsync(tsc, _processDoneMsg);
+                await SetAndUpdateVisualStatusContextAsync(_processDoneMsg);
 
             }
             catch (Exception ex)
             {
                 await ShowError(ex.Message);
-                await sbs.TearDown();
-                await twd.TearDown();
-                await tsc.TearDown();
+
+                foreach (var statusStrategy in _statusStrategies)
+                {
+                    await statusStrategy.TearDown();
+                }
             }
         }
 
@@ -91,7 +101,7 @@ namespace UnitGPT.Commands
             _selectedCode = selectedCode;
             if (selectedCode == string.Empty)
             {
-                _errorMsg = "No selected code.";
+                _errorMsg = _noSelectedCodeErrorMessage;
             }
         }
 
@@ -104,11 +114,11 @@ namespace UnitGPT.Commands
         {
             if (UnitGPTSettings.Instance.XUnitTestProjectName.Length == 0)
             {
-                _errorMsg = "No xUnit project path, please add a path to created xUnit project under Tools/Options/UnitGPT.";
+                _errorMsg = _noxUnitProjectPathErrorMessage;
             }
             if (UnitGPTSettings.Instance.APIKey.Length == 0)
             {
-                _errorMsg = "No api key to OpenAi. Please add a key under Tools/Options/UnitGPT.";
+                _errorMsg = _noApiKeyErrorMessage;
             }
         }
     }

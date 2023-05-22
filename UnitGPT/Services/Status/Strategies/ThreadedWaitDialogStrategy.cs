@@ -5,8 +5,8 @@ namespace UnitGPT.Services.Status.Strategies
     internal class ThreadedWaitDialogStrategy : IStatusStrategy
     {
         private IVsThreadedWaitDialog4 _twd;
-        private int _totalSteps;
-        private int _currentStep = 0;
+        private readonly int _totalSteps;
+        private int _currentStep;
 
         public ThreadedWaitDialogStrategy(int totalSteps)
         {
@@ -19,6 +19,7 @@ namespace UnitGPT.Services.Status.Strategies
             var fac = await VS.Services.GetThreadedWaitDialogAsync() as IVsThreadedWaitDialogFactory;
 #pragma warning restore CVST001 // Cast interop services to their specific type
             _twd = fac.CreateInstance();
+
         }
 
         public async Task TearDown(string message = "")
