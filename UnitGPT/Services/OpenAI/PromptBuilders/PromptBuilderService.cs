@@ -11,7 +11,7 @@
 
         internal static string CSharpCodePromptBuilder(string description)
         {
-            return $"Write c# code based on the following description: ${description}";
+            return $"Generate c# code based on the following description: ${description} . Place a comment with the content 'Start of code' before the generated code and place a comment with the content 'End of code' after the generated code.";
         }
     }
 }
