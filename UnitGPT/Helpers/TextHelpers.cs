@@ -12,11 +12,16 @@ namespace UnitGPT.Helpers
             return match.Success ? match.Value : string.Empty;
         }
 
-        internal static string ExtractCode(string input)
+        internal static string ExtractMethodName(string code)
         {
-            const string startComment = "// Start of test";
-            const string endComment = "// End of test";
+            var pattern = @"(\w+)\s+(\w+)\s*\(";
+            var match = Regex.Match(code, pattern);
 
+            return match.Success ? match.Groups[2].Value : string.Empty;
+        }
+
+        internal static string ExtractCode(string input, string startComment, string endComment)
+        {
             var startIndex = input.IndexOf(startComment);
             var endIndex = input.IndexOf(endComment);
 

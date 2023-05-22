@@ -1,18 +1,19 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using UnitGPT.Services.CodeGeneration.Interface;
 
 namespace UnitGPT.Services.CodeGeneration
 {
-    internal class CodeGenerationService
+    internal class CodeToFileGenerationService : ICodeGenerationService
     {
         private string _testProjectName;
 
-        internal CodeGenerationService()
+        internal CodeToFileGenerationService()
         {
             _testProjectName = UnitGPTSettings.Instance.XUnitTestProjectName;
         }
 
-        internal async Task GenerateTestFileAsync(string name, string testCode)
+        public async Task GenerateCodeAsync(string name, string testCode)
         {
             var project = await GetProjectFromNameAsync();
             var path = GetDirectoryFromPath(project?.FullPath);
