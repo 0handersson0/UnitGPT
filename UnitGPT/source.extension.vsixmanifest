@@ -3,10 +3,10 @@
     <Metadata>
         <Identity Id="UnitGPT.04a9da1c-1aa5-4de7-8ebc-c3ae22643252" Version="1.0" Language="en-US" Publisher="Company" />
         <DisplayName>UnitGPT</DisplayName>
-        <Description xml:space="preserve">Visual studio extension for generating unittests with OpenAi. Visual</Description>
-        <Icon>Resources\Icon.png</Icon>
-        <PreviewImage>Resources\Icon.png</PreviewImage>
-        <Tags>unittest, openai, xunit</Tags>
+        <Description xml:space="preserve">Extension for generating unittests, code and code comments with OpenAi. Visual</Description>
+        <Icon>Resources\Icon2.png</Icon>
+        <PreviewImage>Resources\Icon2.png</PreviewImage>
+        <Tags>unittest, openai, xunit, codegeneration, comments</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
