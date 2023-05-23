@@ -1,6 +1,8 @@
 ﻿using UnitGPT.Actions.Base;
 using UnitGPT.Services.CodeGeneration;
-using UnitGPT.Services.OpenAI;
+using UnitGPT.Services.CodeGeneration.Models;
+using UnitGPT.Services.OpenAI.Models;
+using UnitGPT.Services.OpenAI.Services;
 
 namespace UnitGPT.Actions.UnitTest
 {
@@ -16,6 +18,15 @@ namespace UnitGPT.Actions.UnitTest
             NoxUnitProjectPathErrorMessage = "No xUnit project path, please add a path to created xUnit project under Tools/Options/UnitGPT.";
             NoApiKeyErrorMessage = "No api key to OpenAi. Please add a key under Tools/Options/UnitGPT.";
             NoSelectedCodeErrorMessage = "No selected code.";
+        }
+
+        public override async Task GenerateCodeAsync(ResponseModel response)
+        {
+            await CodeGenerationService.GenerateCodeAsync(new CodeToFileGenerationModel()
+            {
+                Code = response.Code,
+                Name = response.Name
+            });
         }
     }
 }

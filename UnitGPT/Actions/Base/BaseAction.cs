@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnitGPT.Services.CodeGeneration.Interface;
 using UnitGPT.Services.OpenAI.Interface;
+using UnitGPT.Services.OpenAI.Models;
 using UnitGPT.Services.Status.Strategies;
 using UnitGPT.Services.Status;
 
@@ -9,9 +11,10 @@ namespace UnitGPT.Actions.Base
 {
     internal abstract class BaseAction
     {
-        private string _errorMsg = string.Empty;
-        private string _selectedCode = string.Empty;
-        private readonly ICodeGenerationService _codeGenerationService;
+        public string ErrorMsg = string.Empty;
+        public string SelectedCode = string.Empty;
+        public readonly ICodeGenerationService CodeGenerationService;
+
         private readonly IRequestService _requestService;
         private readonly StatusStrategyContext _statusStrategyContext;
         private readonly List<IStatusStrategy> _statusStrategies;
@@ -27,7 +30,7 @@ namespace UnitGPT.Actions.Base
 
         protected BaseAction(ICodeGenerationService codeGenerationService, IRequestService requestService)
         {
-            _codeGenerationService = codeGenerationService;
+            CodeGenerationService = codeGenerationService;
             _requestService = requestService;
             _statusStrategyContext = new();
             _statusStrategies = new();
@@ -55,34 +58,34 @@ namespace UnitGPT.Actions.Base
 
         public async Task ExecuteAsync(OleMenuCmdEventArgs e)
         {
-
-            await SetUpStatusStrategiesAsync(new StatusBarStrategy(ExecutionSteps), new TaskStatusCenterStrategy(ExecutionSteps));
-
-            CheckSettings();
-            await SetSelectedText();
-
-            if (_errorMsg != string.Empty || _selectedCode == String.Empty)
-            {
-                await ShowError(_errorMsg);
-            }
-
             try
             {
+                await SetUpStatusStrategiesAsync(new StatusBarStrategy(ExecutionSteps), new TaskStatusCenterStrategy(ExecutionSteps));
+
+                CheckSettings();
+                await SetSelectedTextAsync();
+
+                if (!string.IsNullOrEmpty(ErrorMsg))
+                {
+                    await ShowErrorAsync(ErrorMsg);
+                    return;
+                }
+
                 await SetAndUpdateVisualStatusContextAsync(StartingProcessMsg);
                 await SetAndUpdateVisualStatusContextAsync(GeneratingUnitTestMsg);
 
-                var response = await _requestService.MakeRequest(_selectedCode);
+                var response = await MakeRequestAsync();
 
                 await SetAndUpdateVisualStatusContextAsync(GeneratingTestFileMsg);
 
-                await _codeGenerationService.GenerateCodeAsync(response.Name, response.Code);
+                await GenerateCodeAsync(response);
 
                 await SetAndUpdateVisualStatusContextAsync(ProcessDoneMsg);
 
             }
             catch (Exception ex)
             {
-                await ShowError(ex.Message);
+                await ShowErrorAsync(ex.Message);
 
                 foreach (var statusStrategy in _statusStrategies)
                 {
@@ -91,32 +94,39 @@ namespace UnitGPT.Actions.Base
             }
         }
 
-        private async Task SetSelectedText()
+        public abstract Task GenerateCodeAsync(ResponseModel response);
+
+        public virtual async Task<ResponseModel> MakeRequestAsync()
+        {
+            return await _requestService.MakeRequest(SelectedCode);
+        }
+
+        public virtual async Task SetSelectedTextAsync()
         {
             var currentDoc = await VS.Documents.GetActiveDocumentViewAsync();
             var selection = currentDoc?.TextView?.Selection.SelectedSpans;
             var selectedCode = selection?.FirstOrDefault().GetText();
-            _selectedCode = selectedCode;
-            if (selectedCode == string.Empty)
+            SelectedCode = selectedCode;
+            if (string.IsNullOrEmpty(selectedCode))
             {
-                _errorMsg = NoSelectedCodeErrorMessage;
+                ErrorMsg = NoSelectedCodeErrorMessage;
             }
         }
 
-        private async Task ShowError(string message)
+        private async Task ShowErrorAsync(string message)
         {
             await VS.MessageBox.ShowErrorAsync("UnitGPT", message);
         }
 
         private void CheckSettings()
         {
-            if (UnitGPTSettings.Instance.XUnitTestProjectName.Length == 0)
+            if (UnitGPTSettings.Instance.XUnitTestProjectName?.Length == 0)
             {
-                _errorMsg = NoxUnitProjectPathErrorMessage;
+                ErrorMsg = NoxUnitProjectPathErrorMessage;
             }
-            if (UnitGPTSettings.Instance.APIKey.Length == 0)
+            if (UnitGPTSettings.Instance.APIKey?.Length == 0)
             {
-                _errorMsg = NoApiKeyErrorMessage;
+                ErrorMsg = NoApiKeyErrorMessage;
             }
         }
     }

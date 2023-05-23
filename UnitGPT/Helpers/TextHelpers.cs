@@ -35,6 +35,20 @@ namespace UnitGPT.Helpers
 
         }
 
+        public static string[] ExtractComments(string code)
+        {
+            string pattern = @"// ###(.*?)###";
+            MatchCollection matches = Regex.Matches(code, pattern, RegexOptions.Singleline);
+
+            string[] extractedComments = new string[matches.Count];
+            for (int i = 0; i < matches.Count; i++)
+            {
+                extractedComments[i] = matches[i].Groups[1].Value.Trim();
+            }
+
+            return extractedComments;
+        }
+
         internal static string CleanTextFromWord(string dirty, string soap)
         {
             var clean = dirty.Replace(soap, "");

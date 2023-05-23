@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using UnitGPT.Services.CodeGeneration.Interface;
+using UnitGPT.Services.CodeGeneration.Models;
 
 namespace UnitGPT.Services.CodeGeneration
 {
@@ -13,11 +14,19 @@ namespace UnitGPT.Services.CodeGeneration
             _testProjectName = UnitGPTSettings.Instance.XUnitTestProjectName;
         }
 
-        public async Task GenerateCodeAsync(string name, string testCode)
+        public async Task GenerateCodeAsync(CodeGenerationBaseModel model)
         {
+            var codeToFileGenerationModel = model as CodeToFileGenerationModel;
             var project = await GetProjectFromNameAsync();
-            var path = GetDirectoryFromPath(project?.FullPath);
-            File.WriteAllText($"{path}/{name}.cs", testCode);
+            if (project != null)
+            {
+                var path = GetDirectoryFromPath(project?.FullPath);
+                File.WriteAllText($"{path}/{codeToFileGenerationModel?.Name}.cs", codeToFileGenerationModel?.Code);
+            }
+            else
+            {
+                throw new NullReferenceException($"Cant find project with name {_testProjectName}");
+            }
         }
 
         private async Task<Project> GetProjectFromNameAsync()

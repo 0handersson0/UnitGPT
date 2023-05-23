@@ -1,9 +1,7 @@
-﻿using UnitGPT.Services.OpenAI.Clients;
-using UnitGPT.Services.OpenAI.Interface;
+﻿using UnitGPT.Services.OpenAI.Interface;
 using UnitGPT.Services.OpenAI.PromptBuilders;
-using UnitGPT.Services.OpenAI.Services;
 
-namespace UnitGPT.Services.OpenAI
+namespace UnitGPT.Services.OpenAI.Services
 {
     internal class CreateUnitTestRequestService : RequestServiceBase, IRequestService
     {

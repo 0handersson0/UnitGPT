@@ -9,10 +9,10 @@ namespace UnitGPT
     {
         public const string Id = "UnitGPT.04a9da1c-1aa5-4de7-8ebc-c3ae22643253";
         public const string Name = "UnitGPT";
-        public const string Description = @"Extension for generating unittests, c# code and code comments with OpenAi. ";
+        public const string Description = @"Extension for generating unit-tests and C# code with OpenAi. ";
         public const string Language = "en-US";
         public const string Version = "1.0";
-        public const string Author = "Company";
+        public const string Author = "Henrik Andersson";
         public const string Tags = "unittest, openai, xunit, codegeneration, comments";
     }
 }
