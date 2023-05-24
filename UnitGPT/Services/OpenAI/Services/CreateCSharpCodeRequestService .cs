@@ -9,7 +9,7 @@ namespace UnitGPT.Services.OpenAI.Services
         private const string EndComment = "// End of code";
         
         internal CreateCSharpCodeRequestService() 
-            : base(new CSharpCodeParseResponseService(StartComment, EndComment), PromptBuilderService.CSharpCodePromptBuilder)
+            : base(new CSharpCodeParseResponseService(StartComment, EndComment), PromptBuilder.CSharpCodePromptBuilder)
         {
         }
 

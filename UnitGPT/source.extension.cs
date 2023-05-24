@@ -12,7 +12,7 @@ namespace UnitGPT
         public const string Description = @"Extension for generating unit-tests and C# code with OpenAi. ";
         public const string Language = "en-US";
         public const string Version = "1.0";
-        public const string Author = "Henrik Andersson";
+        public const string Author = "UpNorthBytes";
         public const string Tags = "unittest, openai, xunit, codegeneration, comments";
     }
 }

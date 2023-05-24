@@ -9,7 +9,7 @@ namespace UnitGPT.Services.OpenAI.Services
         private const string EndComment = "// End of test";
         
         internal CreateUnitTestRequestService() 
-            : base(new UnitTestParseResponseService(StartComment, EndComment), PromptBuilderService.XUnitPromptBuilder)
+            : base(new UnitTestParseResponseService(StartComment, EndComment), PromptBuilder.XUnitPromptBuilder)
         { }
     }
 }

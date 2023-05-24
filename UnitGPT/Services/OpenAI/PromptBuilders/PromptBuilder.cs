@@ -1,6 +1,6 @@
 ﻿namespace UnitGPT.Services.OpenAI.PromptBuilders;
 
-internal class PromptBuilderService
+internal class PromptBuilder
 {
     internal static string XUnitPromptBuilder(string code)
     {
@@ -9,7 +9,7 @@ internal class PromptBuilderService
 
     internal static string CSharpCodePromptBuilder(string description)
     {
-        return $"Generate c# code based on the following description: ${description} . Place a comment with the content 'Start of code' before the generated code and place a comment with the content 'End of code' after the generated code. Make sure all referenced classes and methods are anonymous objects.";
+        return $"Generate c# code based on the following description: ${description} . Place a comment with the content 'Start of code' before the generated code and place a comment with the content 'End of code' after the generated code.";
     }
 }
 
