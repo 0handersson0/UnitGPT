@@ -15,7 +15,7 @@ namespace UnitGPT
     public class UnitGPTSettings : BaseOptionModel<UnitGPTSettings>
     {
         [Category("UnitGPT")]
-        [DisplayName("xUnit project name")]
+        [DisplayName("Test project name")]
         [Description("The name of the test project.")]
         [DefaultValue(true)]
         public string XUnitTestProjectName { get; set; }
