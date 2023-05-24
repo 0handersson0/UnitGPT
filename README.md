@@ -2,7 +2,7 @@
 <img src="https://github.com/0handersson0/UnitGPT/assets/72985598/ace7ec7a-efa3-4714-b4da-ac615354e729" alt="drawing" width="100"/>
 
 # UnitGPT
-<a href="https://github.com/0handersson0/UnitGPT/blob/master/UnitGPT/LatestRelease/UnitGPT.vsix">Release 1.0.5</a>
+<a href="https://github.com/0handersson0/UnitGPT/blob/master/UnitGPT/LatestRelease/UnitGPT.vsix">Latest release</a>
 <td class="ux-itemdetails-left"><div class="itemDetails"><div class="markdown"><p>UnitGPT is a small extension that will help with creating code and unit tests with the power of openAI.</p>
   
   ![CreateCodeDemo](https://github.com/0handersson0/UnitGPT/assets/72985598/b72decfe-e6e1-4772-9c56-d4eeceb58eb1)
