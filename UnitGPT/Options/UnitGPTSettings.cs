@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
+using UnitGPT.Options;
 
 namespace UnitGPT
 {
@@ -15,7 +16,7 @@ namespace UnitGPT
     {
         [Category("UnitGPT")]
         [DisplayName("xUnit project name")]
-        [Description("The name of the xUnit project.")]
+        [Description("The name of the test project.")]
         [DefaultValue(true)]
         public string XUnitTestProjectName { get; set; }
 
@@ -24,6 +25,13 @@ namespace UnitGPT
         [Description("The openAi api key, requeried to make api calls.")]
         [DefaultValue(true)]
         public string APIKey { get; set; }
+
+        [Category("UnitGPT")]
+        [DisplayName("Test framework")]
+        [Description("Select framework from the list.")]
+        [DefaultValue(TestFrameworkOptions.xUnit)]
+        [TypeConverter(typeof(EnumConverter))]
+        public TestFrameworkOptions TestFrameworkOptions { get; set; } = TestFrameworkOptions.xUnit;
 
     }
 }
