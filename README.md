@@ -4,6 +4,10 @@
 # UnitGPT
 
 <td class="ux-itemdetails-left"><div class="itemDetails"><div class="markdown"><p>UnitGPT is a small extension that will help with creating code and unit tests with the power of openAI.</p>
+  
+  ![CreateCodeDemo](https://github.com/0handersson0/UnitGPT/assets/72985598/b72decfe-e6e1-4772-9c56-d4eeceb58eb1)
+
+  
 <h2 id="generate-code">Generate code</h2>
 <p>To create a code suggestion simply write: <strong>// ### instructions here  ###</strong>  any where in the active document and press <strong>Alt+C</strong> or the menu option available under Edit.</p>
 <p><img src="https://upnortbytes.gallerycdn.vsassets.io/extensions/upnortbytes/unitgpt/1.0.1/1684914472198/image.png" alt="image.png"></p>
