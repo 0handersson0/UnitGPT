@@ -16,6 +16,7 @@ internal class CodeAction : BaseAction
 
     public CodeAction() : base(new CodeToDocumentViewGenerationService(), new CreateCSharpCodeRequestService())
     {
+        ActionType = ActionTypes.Code;
         ExecutionSteps = 4;
         GeneratingUnitTestMsg = "generating code...";
         StartingProcessMsg = "starting process";

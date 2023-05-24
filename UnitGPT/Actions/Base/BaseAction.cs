@@ -11,6 +11,7 @@ namespace UnitGPT.Actions.Base
 {
     internal abstract class BaseAction
     {
+        public ActionTypes ActionType;
         public string ErrorMsg = string.Empty;
         public string SelectedCode = string.Empty;
         public readonly ICodeGenerationService CodeGenerationService;
@@ -120,7 +121,7 @@ namespace UnitGPT.Actions.Base
 
         private void CheckSettings()
         {
-            if (UnitGPTSettings.Instance.XUnitTestProjectName?.Length == 0)
+            if (UnitGPTSettings.Instance.XUnitTestProjectName?.Length == 0 && ActionType == ActionTypes.Test)
             {
                 ErrorMsg = NoxUnitProjectPathErrorMessage;
             }

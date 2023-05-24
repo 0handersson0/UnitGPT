@@ -10,6 +10,7 @@ namespace UnitGPT.Actions.UnitTest
     {
         public UnitTestAction() : base(new CodeToFileGenerationService(), new CreateUnitTestRequestService())
         {
+            ActionType = ActionTypes.Test;
             ExecutionSteps = 4;
             GeneratingUnitTestMsg = "generating unit test...";
             StartingProcessMsg = "starting process";

@@ -45,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Actions\Base\ActionTypes.cs" />
     <Compile Include="Actions\Base\BaseAction.cs" />
     <Compile Include="Actions\Code\CodeAction.cs" />
     <Compile Include="Actions\UnitTest\UnitTestAction.cs" />
