@@ -11,7 +11,7 @@ internal class CodeToFileGenerationService : ICodeGenerationService
 
     public async Task GenerateCodeAsync(CodeGenerationBaseModel model)
     {
-        _testProjectName = UnitGPTSettings.Instance.XUnitTestProjectName;
+        _testProjectName = UnitGPTSettings.Instance.TestProjectName;
         var codeToFileGenerationModel = model as CodeToFileGenerationModel;
         var project = await GetProjectFromNameAsync();
         if (project != null)

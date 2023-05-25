@@ -61,11 +61,14 @@ namespace UnitGPT.Actions.Base
         {
             try
             {
-                await SetUpStatusStrategiesAsync(new StatusBarStrategy(ExecutionSteps), new TaskStatusCenterStrategy(ExecutionSteps));
+                ClearErrorMsg();
 
-                CheckSettings();
+                await SetUpStatusStrategiesAsync(new StatusBarStrategy(ExecutionSteps), new TaskStatusCenterStrategy(ExecutionSteps));
+                
                 await SetSelectedTextAsync();
 
+                CheckSettings();
+                
                 if (!string.IsNullOrEmpty(ErrorMsg))
                 {
                     await ShowErrorAsync(ErrorMsg);
@@ -114,6 +117,11 @@ namespace UnitGPT.Actions.Base
             }
         }
 
+        private void ClearErrorMsg()
+        {
+            ErrorMsg = string.Empty;
+        }
+
         private async Task ShowErrorAsync(string message)
         {
             await VS.MessageBox.ShowErrorAsync("UnitGPT", message);
@@ -121,7 +129,7 @@ namespace UnitGPT.Actions.Base
 
         private void CheckSettings()
         {
-            if (UnitGPTSettings.Instance.XUnitTestProjectName?.Length == 0 && ActionType == ActionTypes.Test)
+            if (UnitGPTSettings.Instance.TestProjectName?.Length == 0 && ActionType == ActionTypes.Test)
             {
                 ErrorMsg = NoxUnitProjectPathErrorMessage;
             }

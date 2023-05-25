@@ -11,36 +11,29 @@ namespace UnitGPT.Services.OpenAI.Clients
     {
         private string _url = "https://api.openai.com";
         private string _model = "gpt-3.5-turbo";
-        private string _token;
 
         private HttpClient _httpClient;
-
-        public CompletionsClient()
-        {
-            _token = UnitGPTSettings.Instance.APIKey;
-        }
 
         internal CompletionsClient SetUp()
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(_url);
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
             _httpClient = httpClient;
             return this;
         }
 
         internal async Task<Response?> AskQuestion(string content)
         {
-            using StringContent jsonContent = new(
+            SetRequestToken();
+            var response = await MakeApiCallAsync(new(
                 JsonConvert.SerializeObject(new RequestModel
                 {
                     model = _model,
                     messages = new[] { new Message { role = "user", content = content } }
                 }),
                 Encoding.UTF8,
-                "application/json");
+                "application/json"));
 
-            var response = await _httpClient.PostAsync("v1/chat/completions", jsonContent);
             if (response.IsSuccessStatusCode)
             {
                 var stringData = await response.Content.ReadAsStringAsync();
@@ -53,6 +46,16 @@ namespace UnitGPT.Services.OpenAI.Clients
                 var error = JsonConvert.DeserializeObject<ErrorResponse>(stringData);
                 throw new Exception(error?.error.message);
             }
+        }
+
+        private async Task<HttpResponseMessage> MakeApiCallAsync(StringContent requestBody)
+        {
+            return await _httpClient.PostAsync("v1/chat/completions", requestBody);
+        }
+
+        private void SetRequestToken()
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", UnitGPTSettings.Instance.APIKey);
         }
 
     }

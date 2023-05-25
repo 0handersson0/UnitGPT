@@ -64,6 +64,7 @@
     <Compile Include="Services\CodeGeneration\Models\CodeGenerationBaseModel.cs" />
     <Compile Include="Services\CodeGeneration\Models\CodeToDocumentGenerationModel.cs" />
     <Compile Include="Services\CodeGeneration\Models\CodeToFileGenarationModel.cs" />
+    <Compile Include="Services\Notifications\InfoBarService.cs" />
     <Compile Include="Services\OpenAI\Clients\CompletionsClient.cs" />
     <Compile Include="Services\OpenAI\Services\CreateCSharpCodeRequestService .cs" />
     <Compile Include="Services\OpenAI\Interface\IParseResponseService.cs" />
