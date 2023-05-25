@@ -79,7 +79,7 @@ namespace UnitGPT.Actions.Base
                 await SetAndUpdateVisualStatusContextAsync(GeneratingUnitTestMsg);
 
                 var response = await MakeRequestAsync();
-
+                
                 await SetAndUpdateVisualStatusContextAsync(GeneratingTestFileMsg);
 
                 await GenerateCodeAsync(response);
@@ -102,7 +102,15 @@ namespace UnitGPT.Actions.Base
 
         public virtual async Task<ResponseModel> MakeRequestAsync()
         {
-            return await _requestService.MakeRequest(SelectedCode);
+            var response = await _requestService.MakeRequest(SelectedCode);
+
+            // Try again, sometimes open ai api will return false negative
+            if (response.Code == string.Empty)
+            {
+                return await _requestService.MakeRequest(SelectedCode);
+            }
+
+            return response;
         }
 
         public virtual async Task SetSelectedTextAsync()
