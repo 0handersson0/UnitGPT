@@ -24,7 +24,7 @@
 <h2 id="options">Options</h2>
 <p>The extension has three option.</p>
 <ol>
-<li>The key that is required to make the openAi api calls. You will need to register on <a href="https://platform.openai.com/" target="_blank" rel="noreferrer noopener nofollow">https://platform.openai.com/</a> and create your own key.</li>
+<li>The key that is required to make the openAi api calls. You will need to register on <a href="https://platform.openai.com/" target="_blank" rel="noreferrer noopener nofollow">https://platform.openai.com/account/api-keys</a> and create your own key.</li>
 <li>The name of the test project that you want to place you're generated unit tests.</li>
 <li>The type of the test project.</li>
 </ol>
