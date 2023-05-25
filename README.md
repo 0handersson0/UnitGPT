@@ -2,7 +2,7 @@
 <img src="https://github.com/0handersson0/UnitGPT/assets/72985598/ace7ec7a-efa3-4714-b4da-ac615354e729" alt="drawing" width="100"/>
 
 # UnitGPT
-
+<a href="https://github.com/0handersson0/UnitGPT/blob/master/UnitGPT/LatestRelease/UnitGPT.vsix">Latest release</a>
 <td class="ux-itemdetails-left"><div class="itemDetails"><div class="markdown"><p>UnitGPT is a small extension that will help with creating code and unit tests with the power of openAI.</p>
   
   ![CreateCodeDemo](https://github.com/0handersson0/UnitGPT/assets/72985598/b72decfe-e6e1-4772-9c56-d4eeceb58eb1)
@@ -24,7 +24,7 @@
 <h2 id="options">Options</h2>
 <p>The extension has three option.</p>
 <ol>
-<li>The key that is required to make the openAi api calls. You will need to register on <a href="https://platform.openai.com/" target="_blank" rel="noreferrer noopener nofollow">https://platform.openai.com/</a> and create your own key.</li>
+<li>The key that is required to make the openAi api calls. You will need to register on <a href="https://platform.openai.com/" target="_blank" rel="noreferrer noopener nofollow">https://platform.openai.com/account/api-keys</a> and create your own key.</li>
 <li>The name of the test project that you want to place you're generated unit tests.</li>
 <li>The type of the test project.</li>
 </ol>
