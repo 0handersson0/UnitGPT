@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.InteropServices;
 using UnitGPT.Options;
+using UnitGPT.Options.Converter;
 
 namespace UnitGPT
 {
@@ -18,14 +17,14 @@ namespace UnitGPT
     {
         [Category("UnitGPT")]
         [DisplayName("OpenAI api-key")]
-        [Description("The openAi api key, requeried to make api calls.")]
+        [Description("The openAi api key, required to make api calls.")]
         [DefaultValue(true)]
         public string APIKey { get; set; }
 
         [Category("UnitGPT")]
         [DisplayName("Test project")]
         [Description("Target for the generated tests")]
-        [TypeConverter(typeof(MyConverter))]
+        [TypeConverter(typeof(ProjectNameListConverter))]
         public string TestProjectName { get; set; }
 
         [Category("UnitGPT")]
@@ -34,22 +33,6 @@ namespace UnitGPT
         [DefaultValue(TestFrameworkOptions.xUnit)]
         [TypeConverter(typeof(EnumConverter))]
         public TestFrameworkOptions TestFrameworkOptions { get; set; } = TestFrameworkOptions.xUnit;
-
     }
 
-    public class MyConverter : TypeConverter
-    {
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
-        {
-            return true;
-        }
-
-        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-        {
-            var projects =  VS.Solutions.GetAllProjectsAsync().Result;
-            return new StandardValuesCollection(projects.Select(p => p.Name).ToList());
-
-            // return base.GetStandardValues(context);
-        }
-    }
 }

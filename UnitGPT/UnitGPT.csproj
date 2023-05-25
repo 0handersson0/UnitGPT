@@ -53,6 +53,7 @@
     <Compile Include="Helpers\CodeSectionHelper.cs" />
     <Compile Include="Helpers\Models\CommentBlock.cs" />
     <Compile Include="Helpers\TextHelpers.cs" />
+    <Compile Include="Options\Converter\ProjectNameListConverter.cs" />
     <Compile Include="Options\TestFrameworkOptions.cs" />
     <Compile Include="Options\UnitGPTSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
