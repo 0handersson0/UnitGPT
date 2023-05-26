@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="UnitGPT.04a9da1c-1aa5-4de7-8ebc-c3ae22643253" Version="1.0.6" Language="en-US" Publisher="UpNorthBytes" />
+        <Identity Id="UnitGPT.04a9da1c-1aa5-4de7-8ebc-c3ae22643253" Version="1.0.7" Language="en-US" Publisher="UpNorthBytes" />
         <DisplayName>UnitGPT</DisplayName>
         <Description xml:space="preserve">Extension for generating unit-tests and C# code with OpenAi. </Description>
         <MoreInfo>https://github.com/0handersson0/UnitGPT</MoreInfo>
