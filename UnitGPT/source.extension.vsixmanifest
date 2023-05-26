@@ -6,6 +6,7 @@
         <Description xml:space="preserve">Extension for generating unit-tests and C# code with OpenAi. </Description>
         <MoreInfo>https://github.com/0handersson0/UnitGPT</MoreInfo>
         <License>Resources\License.txt</License>
+        <GettingStartedGuide>https://github.com/0handersson0/UnitGPT/blob/master/README.md</GettingStartedGuide>
         <Icon>Resources\UnitGPTLogo.png</Icon>
         <PreviewImage>Resources\UnitGPTLogo.png</PreviewImage>
         <Tags>unittest, openai, xunit, codegeneration, comments</Tags>
