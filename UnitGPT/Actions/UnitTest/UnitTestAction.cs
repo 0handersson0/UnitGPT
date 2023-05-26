@@ -16,7 +16,7 @@ namespace UnitGPT.Actions.UnitTest
             StartingProcessMsg = "starting process";
             GeneratingTestFileMsg = "generating test file...";
             ProcessDoneMsg = "process done...";
-            NoxUnitProjectPathErrorMessage = "No xUnit project path, please add a path to created xUnit project under Tools/Options/UnitGPT.";
+            NoxUnitProjectPathErrorMessage = "No test project path found, please add a path to created test project under Tools/Options/UnitGPT.";
             NoApiKeyErrorMessage = "No api key to OpenAi. Please add a key under Tools/Options/UnitGPT.";
             NoSelectedCodeErrorMessage = "No selected code.";
         }

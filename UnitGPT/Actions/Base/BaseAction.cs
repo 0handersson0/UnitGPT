@@ -137,7 +137,7 @@ namespace UnitGPT.Actions.Base
 
         private void CheckSettings()
         {
-            if (UnitGPTSettings.Instance.TestProjectName?.Length == 0 && ActionType == ActionTypes.Test)
+            if (string.IsNullOrEmpty(UnitGPTSettings.Instance.TestProjectName) && ActionType == ActionTypes.Test)
             {
                 ErrorMsg = NoxUnitProjectPathErrorMessage;
             }
