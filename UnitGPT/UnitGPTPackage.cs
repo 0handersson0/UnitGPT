@@ -5,7 +5,7 @@ global using Task = System.Threading.Tasks.Task;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Imaging;
+using UnitGPT.Options;
 using UnitGPT.Services.Notifications;
 
 namespace UnitGPT
@@ -31,8 +31,15 @@ namespace UnitGPT
                 await SetUpInfoBarAsync();
                 await ShowMissingKeyWarningAsync();
             }
+
+            SetUpOptionsSavedEvent();
             
             await this.RegisterCommandsAsync();
+        }
+
+        private void SetUpOptionsSavedEvent()
+        {
+            UnitGPTSettings.Saved += OptionsEvent.SettingsSaved;
         }
 
         private async Task<bool> ShowMissingKeyWarningAsync()
@@ -43,16 +50,10 @@ namespace UnitGPT
 
         private async Task SetUpInfoBarAsync()
         {
-            var model = new InfoBarModel(
-                    new[] {
-                        new InfoBarTextSpan("Please provide an openAI api key to use the UnitGPT plugin."),
-                        new InfoBarHyperlink("Get/create key here")
-                    },
-                    KnownMonikers.Key);
-                await _infoBarService.CreateInfoBarAsync(model);
+            await _infoBarService.CreateInfoBarAsync(OptionsInfoBarMessage.Model);
                 _infoBarService.SetAction(((o, args) =>
                 {
-                    System.Diagnostics.Process.Start("https://platform.openai.com/account/api-keys");
+                    OptionsInfoBarMessage.ClickEvent();
                 }));
         }
     }

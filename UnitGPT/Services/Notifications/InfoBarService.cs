@@ -20,6 +20,15 @@ internal class InfoBarService
         
     }
 
+    internal void CloseInfoBar()
+    {
+        if (_infoBar is { IsVisible: true })
+        {
+            _infoBar?.Close();
+        }
+        
+    }
+
     internal void SetAction(Action<object, InfoBarActionItemEventArgs> action)
     {
         _action = action;

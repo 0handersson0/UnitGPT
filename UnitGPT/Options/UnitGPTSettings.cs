@@ -33,6 +33,7 @@ namespace UnitGPT
         [DefaultValue(TestFrameworkOptions.xUnit)]
         [TypeConverter(typeof(EnumConverter))]
         public TestFrameworkOptions TestFrameworkOptions { get; set; } = TestFrameworkOptions.xUnit;
+
     }
 
 }
