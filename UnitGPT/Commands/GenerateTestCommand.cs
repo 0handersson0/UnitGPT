@@ -1,13 +1,13 @@
 ﻿using UnitGPT.Actions.Base;
 using UnitGPT.Actions.UnitTest;
 
-namespace UnitGPT.Commands
-{
-    [Command(PackageIds.MyCommand)]
-    internal sealed class MyCommand : BaseCommand<MyCommand>
+namespace UnitGPT.Commands;
+
+    [Command(PackageIds.GenerateTestCommand)]
+    internal sealed class GenerateTestCommand : BaseCommand<GenerateTestCommand>
     {
         private readonly BaseAction _baseAction;
-        public MyCommand()
+        public GenerateTestCommand()
         {
             _baseAction = new UnitTestAction();
         }
@@ -17,4 +17,4 @@ namespace UnitGPT.Commands
             await _baseAction.ExecuteAsync(e);
         }
     }
-}
+

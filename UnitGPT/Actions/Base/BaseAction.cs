@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnitGPT.Services.CodeGeneration.Interface;
 using UnitGPT.Services.OpenAI.Interface;
 using UnitGPT.Services.OpenAI.Models;
+using UnitGPT.Services.Options;
 using UnitGPT.Services.Status.Strategies;
 using UnitGPT.Services.Status;
 
@@ -61,6 +62,8 @@ namespace UnitGPT.Actions.Base
         {
             try
             {
+                await OptionsService.LoadSettingsAsync();
+
                 ClearErrorMsg();
 
                 await SetUpStatusStrategiesAsync(new StatusBarStrategy(ExecutionSteps), new TaskStatusCenterStrategy(ExecutionSteps));
@@ -137,11 +140,11 @@ namespace UnitGPT.Actions.Base
 
         private void CheckSettings()
         {
-            if (string.IsNullOrEmpty(UnitGPTSettings.Instance.TestProjectName) && ActionType == ActionTypes.Test)
+            if (string.IsNullOrEmpty(OptionsService.Settings.TestProjectName) && ActionType == ActionTypes.Test)
             {
                 ErrorMsg = NoxUnitProjectPathErrorMessage;
             }
-            if (UnitGPTSettings.Instance.APIKey?.Length == 0)
+            if (OptionsService.Settings.APIKey?.Length == 0)
             {
                 ErrorMsg = NoApiKeyErrorMessage;
             }

@@ -1,4 +1,5 @@
 ﻿using UnitGPT.Services.Notifications;
+using UnitGPT.Services.Options;
 
 namespace UnitGPT.Options
 {
@@ -8,7 +9,7 @@ namespace UnitGPT.Options
 
         internal static void SettingsSaved(BaseOptionModel<UnitGPTSettings> options)
         {
-            if (!string.IsNullOrEmpty(UnitGPTSettings.Instance.APIKey))
+            if (!string.IsNullOrEmpty(OptionsService.Settings.APIKey))
             {
                 BarService.CloseInfoBar();
             }

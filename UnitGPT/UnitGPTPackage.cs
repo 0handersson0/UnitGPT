@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnitGPT.Options;
 using UnitGPT.Services.Notifications;
+using UnitGPT.Services.Options;
 
 namespace UnitGPT
 {
@@ -26,7 +27,9 @@ namespace UnitGPT
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            if (string.IsNullOrEmpty(UnitGPTSettings.Instance.APIKey))
+            await OptionsService.LoadSettingsAsync();
+
+            if (string.IsNullOrEmpty(OptionsService.Settings.APIKey))
             {
                 await SetUpInfoBarAsync();
                 await ShowMissingKeyWarningAsync();

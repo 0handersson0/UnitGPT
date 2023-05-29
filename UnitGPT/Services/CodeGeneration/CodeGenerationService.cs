@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using UnitGPT.Services.CodeGeneration.Interface;
 using UnitGPT.Services.CodeGeneration.Models;
+using UnitGPT.Services.Options;
 
 namespace UnitGPT.Services.CodeGeneration;
 
@@ -11,7 +12,7 @@ internal class CodeToFileGenerationService : ICodeGenerationService
 
     public async Task GenerateCodeAsync(CodeGenerationBaseModel model)
     {
-        _testProjectName = UnitGPTSettings.Instance.TestProjectName;
+        _testProjectName = OptionsService.Settings.TestProjectName;
         var codeToFileGenerationModel = model as CodeToFileGenerationModel;
         var project = await GetProjectFromNameAsync();
         if (project != null)

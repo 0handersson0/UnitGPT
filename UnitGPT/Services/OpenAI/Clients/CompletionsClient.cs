@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnitGPT.Services.OpenAI.Models;
+using UnitGPT.Services.Options;
 
 namespace UnitGPT.Services.OpenAI.Clients
 {
@@ -55,7 +56,7 @@ namespace UnitGPT.Services.OpenAI.Clients
 
         private void SetRequestToken()
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", UnitGPTSettings.Instance.APIKey);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", OptionsService.Settings.APIKey);
         }
 
     }
