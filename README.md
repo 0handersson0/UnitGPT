@@ -28,8 +28,8 @@
 <li>The type of the test generated.</li>
 </ol>
 <p><img src="https://github.com/0handersson0/UnitGPT/assets/72985598/fcc4006f-8410-4fb8-ab09-32917e33d736" alt="image__4.png"></p>
-<h2>Solution specific settings</h2>
-<p>As another option you can create a file named <strong>unitgpt.json</strong> in the root of the solution and that way have solution specific settings. The file will take precedence over the options set in the gui.</p>
+<h2>Project specific settings</h2>
+<p>As another option you can create a file named <strong>unitgpt.json</strong> in the root of the project and that way have project specific settings. The file will take precedence over the options set in the gui.</p>
 <p><img src="https://github.com/0handersson0/UnitGPT/assets/72985598/d053f945-8e9f-454c-9eeb-d4cdd67c7e79" alt="options"></p>
 
 </div>
