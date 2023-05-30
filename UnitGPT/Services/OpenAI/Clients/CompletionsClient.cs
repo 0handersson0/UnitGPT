@@ -45,7 +45,7 @@ namespace UnitGPT.Services.OpenAI.Clients
             {
                 var stringData = await response.Content.ReadAsStringAsync();
                 var error = JsonConvert.DeserializeObject<ErrorResponse>(stringData);
-                throw new Exception(error?.error.message);
+                throw new Exception($"{error?.error.code}:{error?.error.message}");
             }
         }
 

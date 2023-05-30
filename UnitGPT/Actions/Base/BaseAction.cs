@@ -144,7 +144,7 @@ namespace UnitGPT.Actions.Base
             {
                 ErrorMsg = NoxUnitProjectPathErrorMessage;
             }
-            if (OptionsService.Settings.APIKey?.Length == 0)
+            if (string.IsNullOrEmpty(OptionsService.Settings.APIKey))
             {
                 ErrorMsg = NoApiKeyErrorMessage;
             }
