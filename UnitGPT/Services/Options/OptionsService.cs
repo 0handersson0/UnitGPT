@@ -31,26 +31,30 @@ internal class OptionsService
         {
             Settings = UnitGPTSettings.Instance;
         }
-        
     }
 
     private static SolutionItem GetSolutionItem()
     {
-       return _files?.FirstOrDefault(x => x.Text.ToLower() == OptionFileName.ToLower());
+        return _files?.FirstOrDefault(x => x.Text.ToLower() == OptionFileName.ToLower());
     }
 
     private static async Task<bool> SettingsFileExistAsync()
     {
-        var projects = await VS.Solutions.GetAllProjectsAsync();
-        foreach (var project in projects)
+        _files.Clear();
+        var activeFile = await VS.Solutions.GetActiveItemAsync();
+        var project = GetProject(activeFile);
+        if (project == null) return false;
+        foreach (var projectChild in project.Children)
         {
-            foreach (var projectChild in project.Children)
-            {
-                _files.Add(projectChild);
-            }
+            _files.Add(projectChild);
         }
 
         return GetSolutionItem() != null;
+    }
+
+    private static SolutionItem GetProject(SolutionItem solutionItem)
+    {
+        return solutionItem.Type == SolutionItemType.Project ? solutionItem : GetProject(solutionItem.Parent);
     }
 }
 
