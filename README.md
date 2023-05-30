@@ -3,7 +3,7 @@
 
 # UnitGPT
 <a href="https://github.com/0handersson0/UnitGPT/blob/master/UnitGPT/LatestRelease/UnitGPT.vsix">Latest release</a>
-<td class="ux-itemdetails-left"><div class="itemDetails"><div class="markdown"><p>UnitGPT is a small extension that will help with creating code and unit tests with the power of openAI.</p>
+<p>UnitGPT is a small extension that will help with creating code and unit tests with the power of openAI.</p>
   
   ![CreateCodeDemo](https://github.com/0handersson0/UnitGPT/assets/72985598/b72decfe-e6e1-4772-9c56-d4eeceb58eb1)
 
@@ -28,7 +28,11 @@
 <li>The type of the test generated.</li>
 </ol>
 <p><img src="https://github.com/0handersson0/UnitGPT/assets/72985598/fcc4006f-8410-4fb8-ab09-32917e33d736" alt="image__4.png"></p>
-</div></div></td>
+<h2>Solution specific settings</h2>
+<p>As another option you can create a file named <strong>unitgpt.json</strong> in the root of the solution and that way have solution specific settings. The file will take precedence over the options set in the gui.</p>
+<p><img src="https://github.com/0handersson0/UnitGPT/assets/72985598/d053f945-8e9f-454c-9eeb-d4cdd67c7e79" alt="options"></p>
+
+</div>
 
 <h2>Troubleshooting Guide for UnitGPT</h2>
 
