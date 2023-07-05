@@ -6,6 +6,7 @@ namespace UnitGPT.Services.OpenAI.Services
 {
     abstract class ResponseBaseService : IParseResponseService
     {
+        private readonly string[] _blackListWithReplacements = { "csharp", "```" }; 
         private string _startComment;
         private string _endComment;
         private string _defaultname;
@@ -22,7 +23,7 @@ namespace UnitGPT.Services.OpenAI.Services
         public ResponseModel ParseCodeSectionFromResponseBody(string input)
         {
             var codeSnippet = TextHelpers.ExtractCode(input, _startComment, _endComment);
-            codeSnippet = TextHelpers.CleanTextFromWord(codeSnippet, "csharp");
+            codeSnippet = TextHelpers.CleanTextFromWords(new Tuple<string, string[]>(codeSnippet, _blackListWithReplacements));
             var methodName = _extract(codeSnippet);
             return new ResponseModel()
             {

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace UnitGPT.Helpers
 {
@@ -37,11 +38,11 @@ namespace UnitGPT.Helpers
 
         public static string[] ExtractComments(string code)
         {
-            string pattern = @"// ###(.*?)###";
-            MatchCollection matches = Regex.Matches(code, pattern, RegexOptions.Singleline);
+            var pattern = @"// ###(.*?)###";
+            var matches = Regex.Matches(code, pattern, RegexOptions.Singleline);
 
-            string[] extractedComments = new string[matches.Count];
-            for (int i = 0; i < matches.Count; i++)
+            var extractedComments = new string[matches.Count];
+            for (var i = 0; i < matches.Count; i++)
             {
                 extractedComments[i] = matches[i].Groups[1].Value.Trim();
             }
@@ -49,10 +50,17 @@ namespace UnitGPT.Helpers
             return extractedComments;
         }
 
-        internal static string CleanTextFromWord(string dirty, string soap)
+        internal static string CleanTextFromWords(Tuple<string, string[]> dirty)
         {
-            var clean = dirty.Replace(soap, "");
-            return clean;
+            var (word, stainAndSoaps) = dirty;
+            foreach (var sas in stainAndSoaps)
+            {
+                var stainAndSoap = sas.Split(',');
+                var stain = stainAndSoap[0];
+                var soap = stainAndSoap.Length > 1 ? stainAndSoap[1] : "";
+                word = word.Replace(stain, soap);
+            }
+            return word;
         }
     }
 }
